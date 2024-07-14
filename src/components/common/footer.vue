@@ -52,7 +52,7 @@ export default {
 }
 
 .footer_card {
-  width: 1200px;
+//   width: 1200px;
   margin: auto;
   font-size: 14px;
   font-weight: 400;

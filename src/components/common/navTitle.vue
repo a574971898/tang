@@ -1,28 +1,21 @@
 <template>
     <div class="wrapper">
-        <div class="tit_wrapper">
-            <div class="leftBox"><img class="logo_img" src="../../assets/logo.svg" alt=""> <el-divider
-                    direction="vertical"></el-divider><span class="logo_title" :style="{ color: color }">{{ text }}</span>
+        <div class="left_box">
+            <div class="tit_wrapper">
+                <img src="@/assets/logo.png" alt="" srcset="">
             </div>
-            <div class="rightBox">
-                <el-menu :default-active="activeIndex" class="el-menu-right" mode="horizontal" @select="handleSelect"
-                    :active-text-color="color">
-                    <el-menu-item index="home">首页</el-menu-item>
-                    <el-menu-item index="numProcess">数字化加工</el-menu-item>
-                    <el-menu-item index="aiLive">智能直播</el-menu-item>
-
-                    <el-menu-item index="ancientOrc">古籍OCR</el-menu-item>
-                    <!-- <el-submenu index="ORC">
-                        <template slot="title">OCR</template>
-                        <el-menu-item index="ancientOrc">古籍OCR</el-menu-item>
-                        <el-menu-item index="clanOrc">族谱OCR</el-menu-item>
-                    </el-submenu> -->
-                   <!-- <el-menu-item index="aboutUs">关于我们</el-menu-item> -->
-                </el-menu>
-                
+            <div class="tit_nav">
+                <div :class="{'active':active == 1}" @click="gotoindex(1)">[ 01 ] 首页</div>
+                <div :class="{'active':active == 2}" @click="gotoindex(2)">[ 02 ] PFP</div>
+                <div :class="{'active':active == 3}" @click="gotoindex(3)">[ 03 ] 成员</div>
             </div>
         </div>
-
+        <div class="login_btns">
+            <img src="@/assets/icon_Vol.png" alt="" srcset="">
+            <div class="loginbtn">
+                链接钱包 <img src="@/assets/arrow.png" alt="" srcset="">
+            </div>
+        </div>
     </div>
 </template>
 
@@ -31,84 +24,44 @@
 export default {
     name: "navMenu",
     props: {
-        titles: {
-            default: '文化数字化AI解决方案',
-        },
-        color: {
-            default: 'rgba(44, 96, 245, 1)',
-            type: String,
-        },
 
     },
     components: {
     },
     data() {
         return {
-            activeIndex: 'home',
-            dialogVisible: false,
-            text: this.titles,
-            EmailsdialogVisible: false,
-            userdata: JSON.parse(localStorage.getItem("userdata")) || {},
-            falg: false
+           active:1,
         }
     },
     watch: {
-        userdata: {
-            deep:true,
-            handler(newVal){
-              if( JSON.stringify(newVal) == '{}' ){
-                this.falg = false
-              }else{
-                this.falg = true
-              }
-            }
-        }
+       
     },
     created() {
-        if(this.$route && this.$route.name) {
-            this.activeIndex = this.$route.name;
-        }
-        if (localStorage.token) {
-            this.falg = true;
-        }
+       
     },
     mounted() {
-        if (localStorage.userdata) {
-            var test = JSON.parse(localStorage.userdata)
-            if (test) {
-                this.userdata = test
-                if (test.isCompany == 0 && !test.email) {
-                    this.EmailsdialogVisible = true
-                }
-            }
+        console.log(this.$route);
+        if(this.$route.fullPath == '/'){
+            this.active = 1
+        } else if(this.$route.fullPath == '/member'){
+            this.active = 3
+        } else{
+            this.active = 2
         }
-
     },
     methods: {
-        setfalgs(){
-            console.log(123)
-            this.falg = true
-        },
-        handleSelect(key, keyPath) {
-            this.activeIndex = key;
-            console.log(key);
-            if(key != this.$route.name){
-                this.$router.push({ path: `/${key}`, replace: true })
+        gotoindex(index){
+            if(index == 1){
+                this.active = 1
+                this.$router.push("/")
+            }else if(index == 2){
+                this.active = 2
+                this.$router.push("/pfp")
+            }else if(index == 3){
+                this.active = 3
+                this.$router.push("/member")
             }
-        },
-        setdialogVisible() {
-            this.dialogVisible = !this.dialogVisible;
-        },
-        handleCommand(type) {
-            if (type == 'edit') {
-                localStorage.removeItem('token');
-                localStorage.removeItem('userdata');
-                this.falg = false
-                if ( this.$route.name != 'home') {
-                    this.$router.push({ path: '/home', replace: true })
-                }
-            }
-        }
+        }   
     }
 }
 </script>
@@ -116,114 +69,67 @@ export default {
 <style lang="less" scoped>
 .wrapper {
     position: fixed;
-    background: #ffffff30;
+    background: #ffffff00;
+    height: 72px;
+    padding: 0 40px 0 40px;
+    min-width: calc(100vw - 80px);
     top: 0px;
     left: 0px;
     z-index: 100;
-    width: 100%;
     backdrop-filter: blur(30px);
-}
-
-.tit_wrapper {
-    height: 60px;
-    width: 100%;
-    margin: auto;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-
-    .leftBox {
-        min-width: 400px;
-        padding-left: 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    .left_box{
         display: flex;
-        align-items: center;
     }
-
-    .rightBox {
-        width: calc(100% - 400px);
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-
-        .el-menu--horizontal>.el-menu-item {
-            margin: 0 25px !important;
-        }
-
-        .el-menu.el-menu--horizontal {
-            border-bottom: solid 1px transparent;
-        }
-
-        .el-menu {
-            border-right: solid 1px transparent;
-            background-color: transparent;
-        }
-
-        .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
-        .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
-        .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
-            background-color: transparent !important;
-        }
-
-        & /deep/ .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
-            background-color: transparent !important;
-        }
-    }
-
-    .logo_img {
-
-        width: 90px;
-        height: 30px
-    }
-
-    .logo_title {
-        img {
-            width: 46px;
-        }
-    }
-
-
-    .active {
-        color: #1989fa;
-        border-bottom: 4px solid #1989fa;
-        height: 65px !important;
-        line-height: 76px !important;
-    }
-
 }
-
-.el-menu--horizontal>.el-menu-item {
-    margin: 0 12px;
+.tit_wrapper{
+  padding: 15px 0;
 }
-
-
-.loginCard {
-
-    .loginBox {
-        color: #fff;
-        width: 100px;
-        height: 60px;
+.tit_nav{
+    line-height: 72px;
+    height: 72px;
+    font-size: 14px;
+    color: #fff;
+    display: flex;
+    margin-left: 150px;
+    >div{
+        margin-left: 40px;
+        cursor: pointer;
+        position: relative;
+    }
+    .active::before  {
+        content: "";
+        position: absolute;
+        left: 10%;
+        bottom: -2px;
+        display: block;
+        width: 80%;
+        height: 4px;
+        background-color: #fff;
+    }
+}
+.login_btns{
+    margin-right: 40px;
+    padding: 15px 0;
+    display: flex;
+    align-content: center;
+    .loginbtn{
+        width: 160px;
+        height: 40px;
+        border-radius: 20px;
+        border: 1px solid #FFFFFF;
+        line-height: 40px;
         text-align: center;
-        line-height: 60px;
-        background-color: #1989fa;
+        vertical-align: middle;
+        color: #fff;
+        margin-left: 20px;
         cursor: pointer;
-        transition: all 0.3s;
-        
-        & /deep/ .el-dialog__header {
-            display: none !important;
-        }
-        
-        & /deep/ .el-dialog__body {
-            padding: 0 !important;
-        }
     }
-    /* .loginBox:hover {
+    >img{
         cursor: pointer;
-        background-color: #02c0ff !important;
-    } */
+    }
 }
 
-.lgtypebox {
-    text-align: center;
-    margin: 0 0 10px 0;
-}
 </style>

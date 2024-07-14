@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- <navtitle :background-image="backgroundIms" :color="222" :titles="navTitleText"> </navtitle> -->
+    <navtitle> </navtitle>
     <router-view />
     <!-- <footers></footers> -->
   </div>
@@ -8,13 +8,13 @@
 
 <script>
 // import Vue from 'vue'
-// import navtitle from "@/components/common/navTitle";
+import navtitle from "@/components/common/navTitle";
 // import footers from "@/components/common/footer";
 export default {
   name: 'App',
   data(){
     return{
-      navTitleText: '文化数字化AI解决方案',
+      
     }
   },
   created(){
@@ -41,7 +41,7 @@ export default {
   mounted(){
   },
   components: {
-    // navtitle,
+    navtitle,
     // footers,
   },
 }
@@ -50,13 +50,19 @@ export default {
 <style lang="less" scoped>
 
 #app{
-  /* min-width: 1200px; */
-  overflow-x: auto;
+  min-width: 1440px;
   min-height: 100vh;
-  background: linear-gradient(180deg, #ffffff 0%, #F6F6F6 100%);
+  background: #111111;
   position: relative;
   height: auto;
   font-family: HanSongSiYuan-Medium;
+  max-width: 100vw;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+#app::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
  
 </style>
