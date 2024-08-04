@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import Web3 from 'web3'
 import ElementUI from 'element-ui';
 import VueDragscroll from 'vue-dragscroll'
 import 'element-ui/lib/theme-chalk/index.css';
@@ -10,13 +11,22 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 import less from 'less';
 // import './components/element/index'
-import {post,get,patch,put} from '../utils/http';
-
+import {post,get,patch,put,gets} from '../utils/http';
+import store from './store'
 //定义全局变量
 Vue.prototype.$post=post;
-Vue.prototype.$get=get;
+Vue.prototype.$get = get;
+Vue.prototype.$gets = gets;
 Vue.prototype.$patch=patch;
-Vue.prototype.$put=put;
+Vue.prototype.$put = put;
+if(typeof web3 !== "undefined"){
+    web3 = new Web3(web3.currentProvider)
+}else{
+    var rpcUrl = 'https://bsc-dataseed.binance.org/';
+    web3 = new Web3(new Web3.providers.HttpProvider(rpcUrl));
+}
+
+Vue.prototype.$web3 = web3;
 
 Vue.use(ElementUI);
 Vue.use(VueDragscroll)
@@ -28,6 +38,7 @@ Vue.config.productionTip = false;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'

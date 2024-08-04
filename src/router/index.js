@@ -13,5 +13,5 @@ export default new Router({
   routes: [
     ...routes1,
   ],
-  mode:"history"
+    mode:"hash"
 })

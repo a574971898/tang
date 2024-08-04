@@ -4,6 +4,7 @@ import getpfp from "@/components/getpfp"; // 首页
 import mypfp from "@/components/mypfp"; // 首页
 import test from "@/components/test"; // 首页
 import member from "@/components/member"; // 首页
+import setNFT from "@/components/setNFT"; // 首页
 
 var routes1 = [
   {
@@ -35,6 +36,11 @@ var routes1 = [
         path: "/member",
         name: "member",
         component: member
+    },
+    {
+        path: "/setNFT",
+        name: "setNFT",
+        component: setNFT
     }
 ]; 
 

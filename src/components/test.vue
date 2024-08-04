@@ -4,7 +4,7 @@
       <img src="@/assets/other/gexing.png" alt="" />
     </div>
     <div class="testbox">
-      <div class="inputbox">
+      <div class="inputbox"  v-if="globalParam == 'Zh'">
         <el-select v-model="sex" placeholder="您的性别" popper-append-to-body>
           <el-option
             v-for="item in 2"
@@ -15,8 +15,29 @@
           </el-option>
         </el-select>
       </div>
-      <div class="inputbox">
-        <el-select v-model="year" placeholder="出生年份">
+      <div class="inputbox" v-else>
+        <el-select v-model="sex" placeholder="Gender" popper-append-to-body>
+          <el-option
+            v-for="item in 2"
+            :key="item == 1 ? 'Male' : 'Female'"
+            :label="item == 1 ? 'Male' : 'Female'"
+            :value="item == 1 ? 'Male' : 'Female'"
+          >
+          </el-option>
+        </el-select>
+      </div>
+      
+      <div class="inputbox" >
+        <el-select v-model="year" placeholder="出生年份" v-if="globalParam == 'Zh'">
+          <el-option
+            v-for="item in options"
+            :key="item"
+            :label="item"
+            :value="item"
+          >
+          </el-option>
+        </el-select>
+         <el-select v-model="year" placeholder="Year" v-else>
           <el-option
             v-for="item in options"
             :key="item"
@@ -27,18 +48,26 @@
         </el-select>
       </div>
       <div class="inputbox">
-        <el-select v-model="mouth" placeholder="出生月份">
+        <el-select v-model="mouth" placeholder="出生月份" v-if="globalParam == 'Zh'">
+          <el-option v-for="item in 12" :key="item" :label="item" :value="item">
+          </el-option>
+        </el-select>
+        <el-select v-model="mouth" placeholder="Month" v-else>
           <el-option v-for="item in 12" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
       </div>
       <div class="inputbox">
-        <el-select v-model="day" placeholder="出生日期">
+        <el-select v-model="day" placeholder="出生日期" v-if="globalParam == 'Zh'">
+          <el-option v-for="item in 30" :key="item" :label="item" :value="item">
+          </el-option>
+        </el-select>
+        <el-select v-model="day" placeholder="Date" v-else>
           <el-option v-for="item in 30" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
       </div>
-      <div class="inputbox inputboxb">提交 →</div>
+      <div class="inputbox inputboxb" @click="gotogetinfo()">{{globalParam == 'Zh'?"提交":"Submit"}} →</div>
     </div>
   </div>
 </template>
@@ -55,6 +84,11 @@ export default {
       options: [],
     };
   },
+  computed: {
+    globalParam() {
+      return this.$store.getters.globalParam;
+    }
+  },
   created() {
     this.setoption();
   },
@@ -64,8 +98,10 @@ export default {
       for (let index = 0; index < 100; index++) {
         this.options[index] = index + year;
       }
-      console.log(this.options);
     },
+    gotogetinfo(){
+        this.$router.push('/setNFT')
+    }
   },
 };
 </script>

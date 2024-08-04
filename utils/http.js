@@ -3,8 +3,8 @@ import Vue from 'vue';
 
 axios.defaults.timeout = 5000000;
 // axios.defaults.baseURL = 'http://192.168.31.233:8080';  //贵浩
-// axios.defaults.baseURL = 'http://192.168.31.127:8080';  //超哥
-axios.defaults.baseURL = process.env.VUE_APP_API_URL;   // 正式
+axios.defaults.baseURL = 'https://api.tangs.ai';  //超哥
+// axios.defaults.baseURL = process.env.VUE_APP_API_URL;   // 正式
 
 //http request 拦截器
 axios.interceptors.request.use(
@@ -79,6 +79,21 @@ export function post(url, data = {}) {
             .then(response => {
                 resolve(response.data);
             }, err => {
+                reject(err)
+            })
+    })
+}
+
+export function gets(url, params = {}) {
+    return new Promise((resolve, reject) => {
+        axios.defaults.baseURL = 'https://api.metaclone.chat';  //超哥
+        axios.get(url, {
+            params: params
+        })
+            .then(response => {
+                resolve(response.data);
+            })
+            .catch(err => {
                 reject(err)
             })
     })

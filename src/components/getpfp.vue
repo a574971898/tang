@@ -4,16 +4,20 @@
         <img src="@/assets/other/code.png" alt="">
     </div>
     <div class="boxcenter">
-        <input class="inputbox" type="text" placeholder="请输入兑换码">
+        <input v-if="globalParam=='Zh'"  v-model="code" class="inputbox" type="text" placeholder="请输入兑换码">
+        <input v-else v-model="code" class="inputbox" type="text" placeholder="Enter Redemption Code">
     </div>
     <div class="boxcenter">
-        <div class="getbtn">
-            立即兑换
+        <div class="getbtn" @click="getcode()">
+            {{globalParam=='Zh'?'立即兑换 * ':"Redeem Now"}}
+            
         </div>
     </div>
     <div class="boxcenter">
         <div class="getcode">
-            没有兑换码？点击立刻获取
+            {{globalParam=='Zh'?'没有兑换码？点击立刻获取 * ':"Don't have a redemption code? Click to get one now."}}
+            
+            
         </div>
     </div>
   </div>
@@ -22,16 +26,34 @@
 <script>
 export default {
   name: "getpfp",
+  computed: {
+    globalParam() {
+      return this.$store.getters.globalParam;
+    }
+  },
   data() {
     return {
-    
+        code:""
     };
   },
   created() {
    
   },
   methods: {
-   
+   getcode(){
+         this.$post("/bind_code_addr", {
+          code: this.code,
+          addr:sessionStorage.res
+        }).then((res) => {
+          if (res.data) {
+            console.log(res);
+            this.$router.push("/mypfp")
+            sessionStorage.code = this.code;
+          } else {
+            
+          }
+        })
+   }
   },
  
 };

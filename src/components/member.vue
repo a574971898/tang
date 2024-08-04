@@ -8,17 +8,17 @@
         <div class="btns">加入我们</div>
     </div>
     <div class="memberlist">
-        <div class="listbox" v-for="(item,index) in memberlist" :key="index">
+        <div class="listbox" v-for="(item,index) in list" :key="index">
             <div class="border top"></div>
             <div class="border right"></div>
             <div class="border bottom"></div>
             <div class="border left"></div>
             <div class="listimg">
-                <img src="../assets/pfp/PFP.png" alt="">
+                <img :src="item.logo" alt="">
             </div>
             <div class="listtext">
                 <div class="names">{{ item.name }}</div>
-                <div>{{ item.info }}</div>
+                <div>{{ item.intro}}</div>
             </div>
         </div>
     </div>
@@ -56,14 +56,23 @@ export default {
                 name:'Chen caigen',
                 info:"Well know blockchain auther"
             }
-        ]
+        ],
+        list:[]
     };
   },
   created() {
-   
+    this.getdata()
   },
   methods: {
-   
+    getdata(){
+        this.$gets("/soul_banner/list", {
+        }).then((res) => {
+            if(res.data){
+                this.list = res.data
+            }
+        })
+        
+    }
   },
  
 };
@@ -150,13 +159,13 @@ export default {
             }
             .bottom{
                 bottom: -1px;
-                left: 10%;
+                right: 10%;
                 height: 1px;
                 width: 0%;
                 transition: width 1s ease-in-out;
             }
             .left{
-                 top: 15%;
+                 bottom: 15%;
                 left: -1px;
                 height: 0%;
                 width: 1px;
